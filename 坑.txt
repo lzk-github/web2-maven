@@ -1,0 +1,14 @@
+# 1.可能存在一个js被引用2次的现象,比如 datepicker/validate....
+	(不知道是否会有影响,据说后面的会覆盖前面的)
+
+# 2.把操作数据库的方法(String sql=???,DbHelp.query...)放到了service里,
+ 	虽然,没有语法错误,但逻辑错误:操作数据库的方法就放到Dao类里面.
+ 	
+# 3.类名起的不规范  AbstractServlet,不是抽象类,起成Abstract开头的
+
+# 4.很蠢但不容易发现的错误
+	SELECT cust.name as custName,investMoney,interestmoney,
+	state, interestsendday,sendtime,from t_interest as it ,t_customer as cust
+	WHERE it.custid=cust.id
+	from的前面多了个逗号!!!
+	

@@ -1,0 +1,87 @@
+$(function(){
+
+	
+	
+	
+	$('#editBtn').click(function(){
+		$('#editForm').submit();
+	});
+	
+	$("#editForm").validate({
+		errorElement:'span',
+		errorClass:'text-danger',
+		rules:{
+			name:{
+				required:true
+			},
+			idNo:{
+				required:true
+			},
+			tel:{
+				required:true
+			},
+			bankNo:{
+				required:true,
+				digits:true
+			},
+			bankName:{
+				required:true
+			},
+			birthday:{
+				required:true
+			},
+			address:{
+				required:true
+			}
+		},
+		messages:{
+			name:{
+				required:"请输入客户名"
+			},
+			idNo:{
+				required:"请输入身份证号"
+			},
+			tel:{
+				required:"请输入电话号码"
+			},
+			bankNo:{
+				required:"请输入银行卡号",
+				digits:"卡号必须为数字"
+			},
+			bankName:{
+				required:"请输入开户行名"
+			},
+			birthday:{
+				required:"请输入客户生日"
+			},
+			address:{
+				required:"请输入客户地址"
+			}
+		},
+		submitHandler:function(){
+			$.ajax({
+				url:'/cust/edit',
+				type:'post',
+				data:$('#editForm').serialize(),
+				beforeSend:function(){
+					$('#editBtn').attr("disabled","disabled").text("保存中....");
+				},
+				success:function(data){
+					if(data.state == 'success') {
+						layer.alert("修改客户信息成功!",function(){
+							window.location.href="/cust/list";
+						});
+					} else {
+						layer.alert(data.message);
+					}
+				},
+				error:function(){
+					layer.alert("服务器忙碌中,请后再试!");
+				},
+				complete:function(){
+					$('#editBtn').removeAttr("disabled").text("保存修改");
+				}
+			});
+		}
+	});
+});

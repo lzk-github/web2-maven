@@ -1,0 +1,52 @@
+$(function(){
+	$("#editBtn").click(function(){
+		$("#editForm").submit();
+	});
+	$('#editForm').validate({
+		errorElement:'span',
+		errorClass:'text-danger',
+		rules:{
+			companyName:{
+				required:true
+			},
+			companyTel:{
+				required:true,
+				rangelength:[5,5],
+			},
+			city:{
+				required:true,
+			},
+			controller:{
+				required:true
+			}
+		},
+		messages:{
+			companyName:{
+				required:"请输入公司名"
+			},
+			companyTel:{
+				required:"请输入公司电话",
+				rangelength:"电话长度为5",
+			},
+			city:{
+				required:"请选择城市"
+			},
+			controller:{
+				required:"请输入负责人"
+			}
+		},
+		submitHandler:function(){
+			$.post("/com/edit",$("#editForm").serialize()).done(function(data){
+				if(data.state == 'success') {
+					layer.alert("修改公司信息成功",function(){
+						window.location.href="/com/list";
+					});
+				} else {
+					layer.alert(data.message);
+				}
+			}).error(function(){
+				layer.alert("服务器忙!");
+			});
+		}
+	});
+});
